@@ -1,0 +1,8 @@
+mywebsite.com:
+  - mywebsite.com
+  - www.mywebsite.com
+  - vpn.mywebsite.com
+
+myotherwebsite.com:
+  - myotherwebsite.com
+  - www.myotherwebsite.com
