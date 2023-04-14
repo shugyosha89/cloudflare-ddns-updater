@@ -5,7 +5,6 @@ Run as a cron job (for example every minute) and when an IP address change is de
 ## Requirements
 * Python 3 (not tested on Python 2)
 * Python modules in `requirements.txt`
-* AWS CLI configured with your AWS profiles
 
 ## Usage
 Clone the repository:
