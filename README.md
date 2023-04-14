@@ -17,6 +17,8 @@ Optionally change the log file location.
 
 Copy `rules.yml.example` to `rules.yml` and fill it with a list of zones (headings) and DNS records (list items) you want to update.
 
+Install the requirements using e.g. `pip install -r requirements.txt`.
+
 Set up a cron job to run `update.py` at regular intervals.
 Example: Add the below to `crontab -e` to run every minute:
 ```
