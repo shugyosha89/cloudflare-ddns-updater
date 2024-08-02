@@ -33,6 +33,7 @@ def get_zone_id(zone_name):
     }
     response = requests.get(url, headers=headers)
     response.raise_for_status()
+    logger.debug(response.json())
     return response.json()['result'][0]['id']
 
 def get_zone_records(zone_id):
@@ -43,6 +44,7 @@ def get_zone_records(zone_id):
     }
     response = requests.get(url, headers=headers)
     response.raise_for_status()
+    logger.debug(response.json())
     result = response.json()['result']
     return {record['name']: record for record in result}
 
