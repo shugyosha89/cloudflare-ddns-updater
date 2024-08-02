@@ -14,6 +14,7 @@ from logzero import logger
 import requests
 import os
 import pathlib
+import traceback
 import yaml
 
 SCRIPT_DIR = pathlib.Path(__file__).parent.absolute()
@@ -62,6 +63,7 @@ def update_record(zone_id, record, ip):
 def update(ip):
     with open(f'{SCRIPT_DIR}/rules.yml', 'r') as file:
         rules = yaml.safe_load(file)
+    has_error = False
     for zone, names in rules.items():
         logger.debug(f"Updating zone {zone}")
         try:
@@ -73,8 +75,13 @@ def update(ip):
                     update_record(zone_id, records[name], ip)
                 except Exception as e:
                     logger.error(f'Failed to update record {name}: {e}')
+                    logger.error(traceback.format_exc())
+                    has_error = True
         except Exception as e:
             logger.error(f'Failed to update zone {zone}: {e}')
+            logger.error(traceback.format_exc())
+            has_error = True
+    return not has_error
 
 def main():
     ip = requests.get(os.environ.get('IP_SERVER')).text.strip()
@@ -85,11 +92,12 @@ def main():
         logger.info('No change')
         exit(0)
 
-    logger.info(f'IP changed from {old_ip} to {ip}')
-    with open(f'{SCRIPT_DIR}/ip.txt', 'w') as f:
-        f.write(ip)
+    logger.info(f'Updating IP from {old_ip} to {ip}...')
 
-    update(ip)
+    if update(ip):
+        with open(f'{SCRIPT_DIR}/ip.txt', 'w') as f:
+            f.write(ip)
+
     logger.info('Done')
 
 if __name__ == "__main__":
