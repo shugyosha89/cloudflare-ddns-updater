@@ -34,6 +34,8 @@ def get_zone_id(zone_name):
     response = requests.get(url, headers=headers)
     response.raise_for_status()
     logger.debug(response.json())
+    if response.json()['result_info']['total_count'] == 0:
+        raise ValueError(f"Zone {zone_name} not found")
     return response.json()['result'][0]['id']
 
 def get_zone_records(zone_id):
